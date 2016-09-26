@@ -2,7 +2,7 @@
 
 /* Filters */
 
-angular.module('mainFilters',[]).filter('sourcesFilter', function(){
+angular.module('rssReaderFilters',[]).filter('sourcesFilter', function(){
 		return function(news,scope){
 		var filteredNews = []
 		scope.sources.forEach(function(s){		

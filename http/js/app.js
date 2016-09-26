@@ -2,20 +2,21 @@
 
 /* App Module */
 
-var mainApp = angular.module('mainApp', [
+var rssReaderApp = angular.module('rssReaderApp', [
   'ngRoute',
-  //'mainAnimations',
-  'mainControllers',
-  'mainFilters',
-  'mainServices'
+  //'rssReaderAnimations',
+  'rssReaderControllers',
+  'rssReaderFilters',
+  'rssReaderServices',
+  'chart.js'
 ]);
 
-mainApp.config(['$routeProvider',
+rssReaderApp.config(['$routeProvider',
   function($routeProvider) {
     $routeProvider.
       when('/', {
         templateUrl: 'partials/main.html',
-        controller: 'mainCtrl'
+        controller: 'MainCtrl'
       }).
       otherwise({
         redirectTo: '/'

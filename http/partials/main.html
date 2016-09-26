@@ -1,0 +1,49 @@
+<div class="row">
+    <div class="col-md-4">
+        <h2>Inputs</h2>
+
+        <form ng-keyup="$event.keyCode==13 && updateAA()">
+            <p>Emprunt total : </p>
+            <input class="form-control" ng-model="totalValue" placeholder="{{defaultTotalValue}}"/>
+            <p>Taux (%) : </p>
+            <input class="form-control" ng-model="rate" placeholder="{{defaultRate}}"/>
+            <!--
+                Taux assurance (%) : <input class="form-control" ng-model="insuranceRate" placeholder="{{defaultInsuranceRate}}"/>
+            -->
+            <p>Durée (années) : </p>
+            <input class="form-control" ng-model="years" placeholder="{{defaultYears}}"/>
+        </form>
+
+    </div>
+    <div class="col-md-4">
+        <h2> Résultats </h2>
+        <p>Mensualité : </p>
+        <input class="form-control" value="{{monthlyCost}}" disabled/>
+        <p>Cout total : </p>
+        <input class="form-control" value="{{totalCost}}" disabled/>
+        <p>Cout total par mois : </p>
+        <input class="form-control" value="{{monthlyTotalCost}}" disabled/>
+        <!--
+            Cout prêt : <label>{{loanCost}}</label>
+            <br/>
+            Cout assurance : <label>{{insuranceCost}}</label>
+            <br/>
+        -->
+        <p>Ratio cout/emprunté (%) : </p>
+        <input class="form-control" value="{{costRate}}" disabled/>
+    </div>
+    <div class="col-md-4">
+<h2>Liens utiles</h2>
+        <p><a href="http://www.meilleurtaux.com/credit-immobilier/barometre-des-taux.html">Meilleurs taux</a></p>
+        
+
+        <h2>Evolutions des taux</h2>
+
+<canvas id="line" class="chart chart-line" chart-data="data"
+    chart-labels="labels" chart-series="series" chart-options="options"
+    chart-dataset-override="datasetOverride" chart-click="onClick"
+</canvas> 
+
+            </div>
+</div>
+
