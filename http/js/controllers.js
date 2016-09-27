@@ -14,6 +14,7 @@ rssReaderControllers.controller('MainCtrl', ['$scope','Rates',
             $scope.series = ['25 ans','20 ans','15 ans'];
             $scope.labels = []
             $scope.data = [[],[],[]]
+            $scope.datasetOverride = [{ fill : false },{ fill : false },{ fill : false }];
             Rates.getRates().success(function(response){
                 response.forEach(function(rate){
                     if(rate.years==25){
@@ -33,9 +34,9 @@ rssReaderControllers.controller('MainCtrl', ['$scope','Rates',
 
                 })
             });
-             $scope.onClick = function (points, evt) {
-                     console.log(points, evt);
-                       };
+            $scope.onClick = function (points, evt) {
+                console.log(points, evt);
+            };
             //Default values
             $scope.defaultTotalValue = 223100;
             $scope.defaultInsuranceRate = 0.22;
