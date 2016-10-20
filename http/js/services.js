@@ -6,9 +6,9 @@
 
 /* Services */
 
-var rssReaderServices = angular.module('rssReaderServices', ['ngResource']);
+var mainServices = angular.module('mainServices', ['ngResource']);
 
-rssReaderServices.factory('Rates',function($http){
+mainServices.factory('Rates',function($http){
     var rates = {};
     rates.getRates = function(){
         return $http.get("http://slapps.fr/hephaistos/ror/rates.json")
