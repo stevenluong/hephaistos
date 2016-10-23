@@ -7,8 +7,8 @@ var serverSocket = "slapps.fr:3030";
 /* Controllers */
 
 var mainControllers = angular.module('mainControllers', []);
-mainControllers.controller('MainCtrl', ['$scope','Rates',
-        function($scope, Rates) {
+mainControllers.controller('MainCtrl', ['$scope','Rates','Simulation',
+        function($scope, Rates,Simulation) {
             // CHART
             //$scope.labels = ["January", "February", "March", "April", "May", "June", "July"];
             $scope.series = ['25 ans','20 ans','15 ans','12 ans','10 ans', '7 ans'];
@@ -57,7 +57,7 @@ mainControllers.controller('MainCtrl', ['$scope','Rates',
             //Default values
             $scope.defaultTotalValue = 223100;
             $scope.defaultInsuranceRate = 0.22;
-            $scope.defaultRate = 2.67;
+            $scope.defaultRate = 2.15;
             $scope.defaultYears = 25;
 
             $scope.monthlyCost = 0;
@@ -67,7 +67,7 @@ mainControllers.controller('MainCtrl', ['$scope','Rates',
             //$scope.insuranceCost = 0;
             $scope.costRate = 0;
 
-            $scope.updateAA=function(){
+            var simulate=function(){
                 if($scope.insuranceRate==null)
                     $scope.insuranceRate= $scope.defaultInsuranceRate;
                 if($scope.totalValue==null)
@@ -90,6 +90,20 @@ mainControllers.controller('MainCtrl', ['$scope','Rates',
                 $scope.insuranceCost=TODO;
                 $scope.costRate=parseInt(($scope.totalCost)/($scope.totalValue)*100);
             };
-            $scope.updateAA();
-
+            simulate();
+            $scope.simulateAndTrace = function(){
+                simulate();
+                var simulation = new Simulation({
+                    at: new Date(),
+                    totalValue: $scope.totalValue,
+                    rate: $scope.rate,
+                    years: $scope.years,
+                    monthlyCost: $scope.monthlyCost,
+                    totalCost: $scope.totalCost,
+                    monthlytotalCost: $scope.monthlyTotalCost,
+                    costRate: $scope.costRate
+                });
+                console.log(simulation);
+                Simulation.save(simulation);
+            }
         }]);

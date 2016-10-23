@@ -1,0 +1,49 @@
+<%= form_for(@simulation) do |f| %>
+  <% if @simulation.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@simulation.errors.count, "error") %> prohibited this simulation from being saved:</h2>
+
+      <ul>
+      <% @simulation.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :at %><br>
+    <%= f.datetime_select :at %>
+  </div>
+  <div class="field">
+    <%= f.label :totalValue %><br>
+    <%= f.text_field :totalValue %>
+  </div>
+  <div class="field">
+    <%= f.label :rate %><br>
+    <%= f.text_field :rate %>
+  </div>
+  <div class="field">
+    <%= f.label :years %><br>
+    <%= f.number_field :years %>
+  </div>
+  <div class="field">
+    <%= f.label :monthlyCost %><br>
+    <%= f.number_field :monthlyCost %>
+  </div>
+  <div class="field">
+    <%= f.label :totalCost %><br>
+    <%= f.number_field :totalCost %>
+  </div>
+  <div class="field">
+    <%= f.label :monthlytotalCost %><br>
+    <%= f.number_field :monthlytotalCost %>
+  </div>
+  <div class="field">
+    <%= f.label :costRate %><br>
+    <%= f.number_field :costRate %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

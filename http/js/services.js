@@ -15,6 +15,12 @@ mainServices.factory('Rates',function($http){
     };	
     return rates;
 });
+mainServices.factory('Simulation',function($resource){
+    return $resource("http://slapps.fr/hephaistos/ror/simulations/:id");
+});
+
+
+//-------------------------
 var formatDateRorToJs = function(date){
     //return date.substring(8,10)+'/'+date.substring(5,7)+' '+date.substring(11,13)+':'+date.substring(14,16);
     return date.substring(11,13)+':'+date.substring(14,16);
@@ -26,3 +32,4 @@ var normaliseDate = function(date){
     var d = ("0" + date.getDate()).slice(-2);
     return y+m+d;
 }
+

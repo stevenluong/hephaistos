@@ -1,0 +1,41 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Listing Simulations</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>At</th>
+      <th>Totalvalue</th>
+      <th>Rate</th>
+      <th>Years</th>
+      <th>Monthlycost</th>
+      <th>Totalcost</th>
+      <th>Monthlytotalcost</th>
+      <th>Costrate</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @simulations.each do |simulation| %>
+      <tr>
+        <td><%= simulation.at %></td>
+        <td><%= simulation.totalValue %></td>
+        <td><%= simulation.rate %></td>
+        <td><%= simulation.years %></td>
+        <td><%= simulation.monthlyCost %></td>
+        <td><%= simulation.totalCost %></td>
+        <td><%= simulation.monthlytotalCost %></td>
+        <td><%= simulation.costRate %></td>
+        <td><%= link_to 'Show', simulation %></td>
+        <td><%= link_to 'Edit', edit_simulation_path(simulation) %></td>
+        <td><%= link_to 'Destroy', simulation, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Simulation', new_simulation_path %>

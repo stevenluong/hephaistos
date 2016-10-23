@@ -1,0 +1,44 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>At:</strong>
+  <%= @simulation.at %>
+</p>
+
+<p>
+  <strong>Totalvalue:</strong>
+  <%= @simulation.totalValue %>
+</p>
+
+<p>
+  <strong>Rate:</strong>
+  <%= @simulation.rate %>
+</p>
+
+<p>
+  <strong>Years:</strong>
+  <%= @simulation.years %>
+</p>
+
+<p>
+  <strong>Monthlycost:</strong>
+  <%= @simulation.monthlyCost %>
+</p>
+
+<p>
+  <strong>Totalcost:</strong>
+  <%= @simulation.totalCost %>
+</p>
+
+<p>
+  <strong>Monthlytotalcost:</strong>
+  <%= @simulation.monthlytotalCost %>
+</p>
+
+<p>
+  <strong>Costrate:</strong>
+  <%= @simulation.costRate %>
+</p>
+
+<%= link_to 'Edit', edit_simulation_path(@simulation) %> |
+<%= link_to 'Back', simulations_path %>
