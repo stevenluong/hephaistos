@@ -1,28 +1,27 @@
 <div class="row">
     <div class="col-md-2">
         <h2>Inputs</h2>
-
         <form ng-keyup="$event.keyCode==13 && simulateAndTrace()">
             <p>Emprunt total : </p>
-            <input class="form-control" ng-model="totalValue" placeholder="{{defaultTotalValue}}"/>
-            <p>Taux (%) : </p>
-            <input class="form-control" ng-model="rate" placeholder="{{defaultRate}}"/>
+            <input class="form-control" ng-model="simulation.totalValue" placeholder="{{defaultTotalValue}}"/>
+            <p>Taux hors assurance (%) : </p>
+            <input class="form-control" ng-model="simulation.rate" placeholder="{{defaultRate}}"/>
             <!--
                 Taux assurance (%) : <input class="form-control" ng-model="insuranceRate" placeholder="{{defaultInsuranceRate}}"/>
             -->
             <p>Durée (années) : </p>
-            <input class="form-control" ng-model="years" placeholder="{{defaultYears}}"/>
+            <input class="form-control" ng-model="simulation.years" placeholder="{{defaultYears}}"/>
         </form>
 
     </div>
     <div class="col-md-2">
         <h2> Résultats </h2>
-        <p>Mensualité : </p>
-        <input class="form-control" value="{{monthlyCost}}" disabled/>
         <p>Cout total : </p>
-        <input class="form-control" value="{{totalCost}}" disabled/>
-        <p>Cout total par mois : </p>
-        <input class="form-control" value="{{monthlyTotalCost}}" disabled/>
+        <input class="form-control" value="{{simulation.totalCost}}" disabled/>
+        <p>Mensualité : </p>
+        <input class="form-control" value="{{simulation.monthlyCost}}" disabled/>
+        <p>Cout moyen par mois : </p>
+        <input class="form-control" value="{{simulation.monthlyTotalCost}}" disabled/>
         <!--
             Cout prêt : <label>{{loanCost}}</label>
             <br/>
@@ -30,22 +29,48 @@
             <br/>
         -->
         <p>Ratio cout/emprunté (%) : </p>
-        <input class="form-control" value="{{costRate}}" disabled/>
+        <input class="form-control" value="{{simulation.costRate}}" disabled/>
     </div>
+    <div class="col-md-8">
+        <h2> Simulations </h2>
+        <table class="table table-striped">
+            <th>Emprunt total</th>
+            <th>Taux</th>
+            <th>Durée</th>
+            <th>Cout Total</th>
+            <th>Mensualité</th>
+            <th>Cout moyen par mois</th>
+            <th>Ratio</th>
+            <tr ng-repeat="s in simulations track by $index">
+                <td>{{s.totalValue}} €</td>
+                <td>{{s.rate}}</td>
+                <td>{{s.years}} ans</td>
+                <td>{{s.totalCost}} €</td>
+                <td>{{s.monthlyCost}} €</td>
+                <td>{{s.monthlytotalCost}} €</td>
+                <td>{{s.costRate}} %</td>
+            </tr>
+        </table>
+
+    </div>
+</div>
+<hr/>
+<div class="row">
     <div class="col-md-2">
-        <h2>Taux actuels</h2>
+        <h2>Taux actuels corrects</h2>
         25 ans : {{todayRate[0]}}<br/>
         20 ans : {{todayRate[1]}}<br/>
         15 ans : {{todayRate[2]}}<br/>
         12 ans : {{todayRate[3]}}<br/>
         10 ans : {{todayRate[4]}}<br/>
-         7 ans : {{todayRate[5]}}<br/>
+        7 ans : {{todayRate[5]}}<br/>
 
-        <h2>Source</h2>
-        <p><a href="http://www.meilleurtaux.com/credit-immobilier/barometre-des-taux.html">Meilleurs taux</a></p>
+        <h2>Taux actuels excellents</h2>
+
+        <p>Disponibles sur : <a href="http://www.meilleurtaux.com/credit-immobilier/barometre-des-taux.html">Meilleurstaux.com</a></p>
     </div>
 
-    <div class="col-md-6">
+    <div class="col-md-10">
         <h2>Evolutions des taux</h2>
         <canvas id="line" class="chart chart-line" chart-data="data"
                                                    chart-labels="labels" chart-series="series" chart-options="options"
@@ -61,10 +86,6 @@
             </div>
         -->
     </div>
-
-
-
-
 </div>
 </div>
 

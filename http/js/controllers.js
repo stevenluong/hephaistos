@@ -9,6 +9,8 @@ var serverSocket = "slapps.fr:3030";
 var mainControllers = angular.module('mainControllers', []);
 mainControllers.controller('MainCtrl', ['$scope','Rates','Simulation',
         function($scope, Rates,Simulation) {
+            $scope.simulations= [];
+            $scope.simulation= {};
             // CHART
             //$scope.labels = ["January", "February", "March", "April", "May", "June", "July"];
             $scope.series = ['25 ans','20 ans','15 ans','12 ans','10 ans', '7 ans'];
@@ -60,50 +62,53 @@ mainControllers.controller('MainCtrl', ['$scope','Rates','Simulation',
             $scope.defaultRate = 2.15;
             $scope.defaultYears = 25;
 
-            $scope.monthlyCost = 0;
-            $scope.totalCost = 0;
-            $scope.monthlyTotalCost = 0;
+            $scope.simulation.monthlyCost = 0;
+            $scope.simulation.totalCost = 0;
+            $scope.simulation.monthlyTotalCost = 0;
             //$scope.loanCost = 0;
             //$scope.insuranceCost = 0;
-            $scope.costRate = 0;
+            $scope.simulation.costRate = 0;
 
             var simulate=function(){
-                if($scope.insuranceRate==null)
-                    $scope.insuranceRate= $scope.defaultInsuranceRate;
-                if($scope.totalValue==null)
-                    $scope.totalValue = $scope.defaultTotalValue;
-                if($scope.rate==null)
-                    $scope.rate = $scope.defaultRate;
-                if($scope.years==null)
-                    $scope.years= $scope.defaultYears;
                 var TODO = "?";
-                var monthlyRate = $scope.rate/12/100;
-                var months = $scope.years*12;
-                if($scope.rate!=0)
-                    $scope.monthlyCost=parseInt(($scope.totalValue*monthlyRate)/(1-Math.pow(1+monthlyRate,-months)));
+                if($scope.simulation.insuranceRate==null)
+                    $scope.simulation.insuranceRate= $scope.defaultInsuranceRate;
+                if($scope.simulation.totalValue==null)
+                    $scope.simulation.totalValue = $scope.defaultTotalValue;
+                var totalValue = $scope.simulation.totalValue;
+                if($scope.simulation.rate==null)
+                    $scope.simulation.rate = $scope.defaultRate;
+                var rate = $scope.simulation.rate;
+                var monthlyRate = rate/12/100;
+                if($scope.simulation.years==null)
+                    $scope.simulation.years= $scope.defaultYears;
+                var months = $scope.simulation.years*12;
+                if(rate!=0)
+                    $scope.simulation.monthlyCost=parseInt((totalValue*monthlyRate)/(1-Math.pow(1+monthlyRate,-months)));
                 else
-                    $scope.monthlyCost=parseInt($scope.totalValue/months);
-
-                $scope.totalCost=parseInt($scope.monthlyCost*months-$scope.totalValue);
-                $scope.monthlyTotalCost=parseInt($scope.totalCost/months);
-                $scope.loanCost=TODO;
-                $scope.insuranceCost=TODO;
-                $scope.costRate=parseInt(($scope.totalCost)/($scope.totalValue)*100);
+                    $scope.simulation.monthlyCost=parseInt(totalValue/months);
+                $scope.simulation.totalCost=parseInt($scope.simulation.monthlyCost*months-totalValue);
+                var totalCost = $scope.simulation.totalCost;
+                $scope.simulation.monthlyTotalCost=parseInt(totalCost/months);
+                $scope.simulation.loanCost=TODO;
+                $scope.simulation.insuranceCost=TODO;
+                $scope.simulation.costRate=parseInt(totalCost/totalValue*100);
             };
             simulate();
             $scope.simulateAndTrace = function(){
                 simulate();
-                var simulation = new Simulation({
+                var s = {
                     at: new Date(),
-                    totalValue: $scope.totalValue,
-                    rate: $scope.rate,
-                    years: $scope.years,
-                    monthlyCost: $scope.monthlyCost,
-                    totalCost: $scope.totalCost,
-                    monthlytotalCost: $scope.monthlyTotalCost,
-                    costRate: $scope.costRate
-                });
-                console.log(simulation);
+                    totalValue: $scope.simulation.totalValue,
+                    rate: $scope.simulation.rate,
+                    years: $scope.simulation.years,
+                    monthlyCost: $scope.simulation.monthlyCost,
+                    totalCost: $scope.simulation.totalCost,
+                    monthlytotalCost: $scope.simulation.monthlyTotalCost,
+                    costRate: $scope.simulation.costRate
+                };
+                $scope.simulations.push(s)
+                var simulation = new Simulation(s);
                 Simulation.save(simulation);
             }
         }]);
