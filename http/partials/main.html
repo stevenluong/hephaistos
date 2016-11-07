@@ -1,7 +1,7 @@
 <div class="row">
     <div class="col-md-2">
         <h2>Inputs</h2>
-        <form ng-keyup="$event.keyCode==13 && simulateAndTrace()">
+        <form>
             <p>Emprunt total : </p>
             <input class="form-control" ng-model="simulation.totalValue" placeholder="{{defaultTotalValue}}"/>
             <p>Taux hors assurance (%) : </p>
@@ -59,7 +59,7 @@
 <hr/>
 <div class="row">
     <div class="col-md-2">
-        <h2>Taux actuels corrects</h2>
+        <h2>Meilleurs taux actuels</h2>
         25 ans : {{todayRate[0]}}<br/>
         20 ans : {{todayRate[1]}}<br/>
         15 ans : {{todayRate[2]}}<br/>
@@ -67,9 +67,9 @@
         10 ans : {{todayRate[4]}}<br/>
         7 ans : {{todayRate[5]}}<br/>
 
-        <h2>Taux actuels excellents</h2>
+        <h2>Source</h2>
 
-        <p>Disponibles sur : <a href="http://www.meilleurtaux.com/credit-immobilier/barometre-des-taux.html">Meilleurstaux.com</a></p>
+        <p><a href="http://www.meilleurtaux.com/credit-immobilier/barometre-des-taux.html">Meilleurstaux.com</a></p>
     </div>
 
     <div class="col-md-10">
@@ -78,15 +78,6 @@
                                                    chart-labels="labels" chart-series="series" chart-options="options"
                                                                                                chart-dataset-override="datasetOverride" chart-click="onClick">
         </canvas> 
-        <!--
-            <div class="col-md-6">
-            <h2>Taux actuels</h2>
-            </div>
-            <div class="col-md-6">
-            <h2>Liens utiles</h2>
-            <p><a href="http://www.meilleurtaux.com/credit-immobilier/barometre-des-taux.html">Meilleurs taux</a></p>
-            </div>
-        -->
     </div>
 </div>
 </div>

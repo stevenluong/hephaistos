@@ -76,9 +76,14 @@ mainControllers.controller('MainCtrl', ['$scope','Rates','Simulation',
                 if($scope.simulation.totalValue==null)
                     $scope.simulation.totalValue = $scope.defaultTotalValue;
                 var totalValue = $scope.simulation.totalValue;
-                if($scope.simulation.rate==null)
-                    $scope.simulation.rate = $scope.defaultRate;
+                //Rate processing
                 var rate = $scope.simulation.rate;
+                if(rate==null)
+                    rate = $scope.defaultRate;
+                if(isNaN(rate)){
+                    rate = rate.replace(",",".");
+                }
+                $scope.simulation.rate = rate;
                 var monthlyRate = rate/12/100;
                 if($scope.simulation.years==null)
                     $scope.simulation.years= $scope.defaultYears;
@@ -107,8 +112,17 @@ mainControllers.controller('MainCtrl', ['$scope','Rates','Simulation',
                     monthlytotalCost: $scope.simulation.monthlyTotalCost,
                     costRate: $scope.simulation.costRate
                 };
-                $scope.simulations.push(s)
-                var simulation = new Simulation(s);
-                Simulation.save(simulation);
+                if(isValid(s)){
+                    $scope.simulations.push(s)
+                    var simulation = new Simulation(s);
+                    Simulation.save(simulation);
+                }
             }
         }]);
+var isValid = function(simulation){
+    if(isNaN(simulation.totalCost)){
+        console.log("NAN");
+        return false;
+    }
+    return true;
+}
