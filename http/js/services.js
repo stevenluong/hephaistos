@@ -16,7 +16,7 @@ mainServices.factory('Rates',function($http){
     return rates;
 });
 mainServices.factory('Simulation',function($resource){
-    return $resource("http://slapps.fr/hephaistos/ror/simulations/:id");
+    return $resource("http://slapps.fr/hephaistos/ror/simulations.json/:id");
 });
 
 
