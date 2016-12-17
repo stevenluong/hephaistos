@@ -2,7 +2,7 @@
     <div class="col-md-2">
         <h2>Inputs</h2>
         <form>
-            <p>Emprunt total : </p>
+            <p>Emprunt : </p>
             <input class="form-control" ng-model="simulation.totalValue" placeholder="{{defaultTotalValue}}"/>
             <p>Taux hors assurance (%) : </p>
             <input class="form-control" ng-model="simulation.rate" placeholder="{{defaultRate}}"/>
@@ -11,27 +11,23 @@
             -->
             <p>Durée (années) : </p>
             <input class="form-control" ng-model="simulation.years" placeholder="{{defaultYears}}"/>
-			<br/>
-			<button class="btn btn-primary" ng-click="simulateAndTrace()">Simuler</button>
+            <p>Taux assurance : </p>
+            <input class="form-control" ng-model="simulation.insuranceRate" placeholder="{{defaultInsuranceRate}}"/>
+            <br/>
+            <button class="btn btn-primary" ng-click="simulateAndTrace()">Simuler</button>
         </form>
 
     </div>
     <div class="col-md-2">
         <h2> Résultats </h2>
-        <p>Cout total : </p>
-        <input class="form-control" value="{{simulation.totalCost}}" disabled/>
+        <p>Cout (assurance) : </p>
+        <input class="form-control" value="{{simulation.loanCost}} (+ {{simulation.insuranceCost}} = {{simulation.totalCost}})" disabled/>
         <p>Mensualité : </p>
-        <input class="form-control" value="{{simulation.monthlyCost}}" disabled/>
+        <input class="form-control" value="{{simulation.monthlyRent}} (+ {{simulation.monthlyInsurance}} = {{simulation.monthlyTotalRent}})" disabled/>
         <p>Cout moyen par mois : </p>
-        <input class="form-control" value="{{simulation.monthlyTotalCost}}" disabled/>
-        <!--
-            Cout prêt : <label>{{loanCost}}</label>
-            <br/>
-            Cout assurance : <label>{{insuranceCost}}</label>
-            <br/>
-        -->
+        <input class="form-control" value="{{simulation.monthlyCost}} (+ {{simulation.monthlyInsurance}} = {{simulation.monthlyTotalCost}})" disabled/>
         <p>Ratio cout/emprunté (%) : </p>
-        <input class="form-control" value="{{simulation.costRate}}" disabled/>
+        <input class="form-control" value="{{simulation.costRate}} ({{simulation.totalRate}})" disabled/>
     </div>
     <div class="col-md-8">
         <h2> Simulations </h2>
@@ -48,7 +44,7 @@
                 <td>{{s.rate}}</td>
                 <td>{{s.years}}ans</td>
                 <td>{{s.totalCost}}€</td>
-                <td>{{s.monthlyCost}}€</td>
+                <td>{{s.monthlyRent}}€</td>
                 <td>{{s.monthlytotalCost}}€</td>
                 <td>{{s.costRate}}%</td>
             </tr>
