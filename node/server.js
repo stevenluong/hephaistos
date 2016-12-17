@@ -1,8 +1,18 @@
 var http = require('http');
 var scraperjs = require('scraperjs');
 var COMMON = require('./common.js');
-scraperjs.StaticScraper.create('http://www.meilleurtaux.com/credit-immobilier/barometre-des-taux.html')
-.scrape(function($) {
+var tmp = scraperjs.StaticScraper.create('http://www.meilleurtaux.com/credit-immobilier/barometre-des-taux.html');
+var CronJob = require('cron').CronJob;
+var cronJob = new CronJob({
+cronTime: '0 0 8 * * *', 
+onTick: function() {
+process();
+}
+});
+cronJob.start();
+
+var process = function(){
+tmp.scrape(function($) {
     return $(".tfix").map(function() {
         return normalize($(this).text());
     }).get();
@@ -29,6 +39,8 @@ scraperjs.StaticScraper.create('http://www.meilleurtaux.com/credit-immobilier/ba
     console.log(values[15]); 
     pushValue(new Date(),12,values[15]);
     })
+}
+
 var normalize = function(text){
     return text.replace(/\n/g," ").replace(/\t/g," ").replace(/\r/g," ");
 };
@@ -42,5 +54,5 @@ var pushValue = function(date,years,rate){
             rate: rate.replace(',','.')
         }
     }
-    COMMON.ror_post(data,"slapps.fr","/hephaistos/ror/rates.json");
+    COMMON.ror_post(data,"hephaistos_ror.slapps.fr","/rates.json");
 }

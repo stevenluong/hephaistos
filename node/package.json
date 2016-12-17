@@ -15,10 +15,7 @@
         "request": "*",
         "scraperjs": "*",
         "socket.io": "*",
+        "cron": "*",
         "socket.io-client": "*"
-    },
-    "scripts": {
-        "postinstall": "bower install",
-        "start": "forever start server.js"
     }
 }

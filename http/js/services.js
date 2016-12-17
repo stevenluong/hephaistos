@@ -11,12 +11,12 @@ var mainServices = angular.module('mainServices', ['ngResource']);
 mainServices.factory('Rates',function($http){
     var rates = {};
     rates.getRates = function(){
-        return $http.get("http://slapps.fr/hephaistos/ror/rates.json")
+        return $http.get("http://hephaistos_ror.slapps.fr/rates.json")
     };	
     return rates;
 });
 mainServices.factory('Simulation',function($resource){
-    return $resource("http://slapps.fr/hephaistos/ror/simulations.json/:id");
+    return $resource("http://hephaistos_ror.slapps.fr/simulations.json/:id");
 });
 
 

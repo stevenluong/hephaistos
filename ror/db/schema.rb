@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160914165713) do
+ActiveRecord::Schema.define(version: 20161023195025) do
 
   create_table "rates", force: :cascade do |t|
     t.date     "date"
@@ -19,6 +19,19 @@ ActiveRecord::Schema.define(version: 20160914165713) do
     t.decimal  "rate"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "simulations", force: :cascade do |t|
+    t.datetime "at"
+    t.decimal  "totalValue"
+    t.decimal  "rate"
+    t.integer  "years"
+    t.integer  "monthlyCost"
+    t.integer  "totalCost"
+    t.integer  "monthlytotalCost"
+    t.integer  "costRate"
+    t.datetime "created_at",       null: false
+    t.datetime "updated_at",       null: false
   end
 
 end

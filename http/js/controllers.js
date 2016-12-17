@@ -1,5 +1,5 @@
 //prod
-var serverSocket = "slapps.fr:3030";
+//var serverSocket = "slapps.fr:3030";
 //dev
 //var serverSocket = "localhost:3030";
 'use strict';
