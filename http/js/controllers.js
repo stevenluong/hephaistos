@@ -62,19 +62,19 @@ mainControllers.controller('MainCtrl', ['$scope','Rates','Simulation',
             $scope.defaultRate = 2.15;
             $scope.defaultYears = 25;
 
-            $scope.simulation.loanCost = 0;
-            $scope.simulation.insuranceCost = 0;
-            $scope.simulation.totalCost = 0;
+            //$scope.simulation.loanCost = 0;
+            //$scope.simulation.insuranceCost = 0;
+            //$scope.simulation.totalCost = 0;
 
-            $scope.simulation.monthlyRent= 0;
-            $scope.simulation.monthlyInsurance = 0;
-            $scope.simulation.monthlyTotalRent= 0;
+            //$scope.simulation.monthlyRent= 0;
+            //$scope.simulation.monthlyInsurance = 0;
+            //$scope.simulation.monthlyTotalRent= 0;
 
-            $scope.simulation.monthlyCost = 0;
-            $scope.simulation.monthlyTotalCost = 0;
+            //$scope.simulation.monthlyCost = 0;
+            //$scope.simulation.monthlyTotalCost = 0;
 
-            $scope.simulation.costRate = 0;
-            $scope.simulation.totalRate = 0;
+            //$scope.simulation.costRate = 0;
+            //$scope.simulation.totalRate = 0;
 
             var preCheck=function(){
                 if($scope.simulation.insuranceRate==null)
@@ -127,12 +127,15 @@ mainControllers.controller('MainCtrl', ['$scope','Rates','Simulation',
                 var totalCost = loanCost+insuranceCost;
                 $scope.simulation.totalCost = totalCost; 
                 //monthlyCost
+                /*
                 var monthlyCost = parseInt(loanCost/months);
                 $scope.simulation.monthlyCost= monthlyCost;
                 $scope.simulation.monthlyTotalCost = monthlyCost+monthlyInsurance;
+                */
                 //CostRate
-                $scope.simulation.costRate=parseInt(loanCost/totalValue*100);
-                $scope.simulation.totalRate =parseInt(totalCost/totalValue*100);
+                $scope.simulation.costRatio=parseInt(loanCost/totalValue*100);
+                $scope.simulation.insuranceRatio =parseInt(insuranceCost/totalValue*100);
+                $scope.simulation.totalRatio =parseInt(totalCost/totalValue*100);
             };
             simulate();
             $scope.simulateAndTrace = function(){
@@ -142,11 +145,17 @@ mainControllers.controller('MainCtrl', ['$scope','Rates','Simulation',
                     at: new Date(),
                     totalValue: $scope.simulation.totalValue,
                     rate: $scope.simulation.rate,
+                    insuranceRate: $scope.simulation.insuranceRate,
                     years: $scope.simulation.years,
+                    loanCost: $scope.simulation.loanCost,
+                    insuranceCost: $scope.simulation.insuranceCost,
                     totalCost: $scope.simulation.totalCost,
                     monthlyRent: $scope.simulation.monthlyRent,
-                    monthlytotalCost: $scope.simulation.monthlyTotalCost,
-                    costRate: $scope.simulation.costRate
+                    monthlyInsurance: $scope.simulation.monthlyInsurance,
+                    monthlyTotalRent: $scope.simulation.monthlyTotalRent,
+                    //monthlytotalCost: $scope.simulation.monthlyTotalCost,
+                    costRatio: $scope.simulation.costRatio,
+                    totalRatio: $scope.simulation.totalRatio
                 };
                 if(isValid(s)){
                     $scope.simulations.push(s)

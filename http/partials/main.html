@@ -21,32 +21,34 @@
     <div class="col-md-2">
         <h2> Résultats </h2>
         <p>Cout (assurance) : </p>
-        <input class="form-control" value="{{simulation.loanCost}} (+ {{simulation.insuranceCost}} = {{simulation.totalCost}})" disabled/>
+        <input class="form-control" value="{{simulation.loanCost}} (+{{simulation.insuranceCost}}={{simulation.totalCost}})" disabled/>
         <p>Mensualité : </p>
-        <input class="form-control" value="{{simulation.monthlyRent}} (+ {{simulation.monthlyInsurance}} = {{simulation.monthlyTotalRent}})" disabled/>
-        <p>Cout moyen par mois : </p>
-        <input class="form-control" value="{{simulation.monthlyCost}} (+ {{simulation.monthlyInsurance}} = {{simulation.monthlyTotalCost}})" disabled/>
+        <input class="form-control" value="{{simulation.monthlyRent}} (+{{simulation.monthlyInsurance}}={{simulation.monthlyTotalRent}})" disabled/>
+        <!--<p>Cout moyen par mois : </p>
+        <input class="form-control" value="{{simulation.monthlyCost}} (+{{simulation.monthlyInsurance}}={{simulation.monthlyTotalCost}})" disabled/>-->
         <p>Ratio cout/emprunté (%) : </p>
-        <input class="form-control" value="{{simulation.costRate}} ({{simulation.totalRate}})" disabled/>
+        <input class="form-control" value="{{simulation.costRatio}} ({{simulation.totalRatio}})" disabled/>
     </div>
     <div class="col-md-8">
         <h2> Simulations </h2>
         <table class="table table-striped">
-            <th>Emprunt total</th>
+            <th>Emprunt</th>
             <th>Taux</th>
             <th>Durée</th>
-            <th>Cout Total</th>
+            <th>Taux Assurance</th>
+            <th>Coût (Assurance)</th>
             <th>Mensualité</th>
-            <th>Cout moyen par mois</th>
+            <!--<th>Coût moyen par mois</th>-->
             <th>Ratio</th>
             <tr ng-repeat="s in simulations track by $index">
                 <td>{{s.totalValue}}€</td>
                 <td>{{s.rate}}</td>
                 <td>{{s.years}}ans</td>
-                <td>{{s.totalCost}}€</td>
-                <td>{{s.monthlyRent}}€</td>
-                <td>{{s.monthlytotalCost}}€</td>
-                <td>{{s.costRate}}%</td>
+                <td>{{s.insuranceRate}}</td>
+                <td>{{s.loanCost}}€ (+{{s.insuranceCost}}={{s.totalCost}})</td>
+                <td>{{s.monthlyRent}}€ (+{{s.monthlyInsurance}}={{s.monthlyTotalRent}})</td>
+                <!--<td>{{s.monthlyTotalCost}}€</td>-->
+                <td>{{s.costRatio}}% ({{s.totalRatio}}%)</td>
             </tr>
         </table>
 
