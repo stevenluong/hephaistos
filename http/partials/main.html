@@ -14,22 +14,26 @@
             <p>Taux assurance : </p>
             <input class="form-control" ng-model="simulation.insuranceRate" placeholder="{{defaultInsuranceRate}}"/>
             <br/>
-            <button class="btn btn-primary" ng-click="simulateAndTrace()">Simuler</button>
+            <button class="btn btn-primary" ng-click="clickSimulate()">Simuler</button>
         </form>
 
     </div>
+    <!--
     <div class="col-md-2">
         <h2> Résultats </h2>
         <p>Cout (assurance) : </p>
         <input class="form-control" value="{{simulation.loanCost}} (+{{simulation.insuranceCost}}={{simulation.totalCost}})" disabled/>
         <p>Mensualité : </p>
         <input class="form-control" value="{{simulation.monthlyRent}} (+{{simulation.monthlyInsurance}}={{simulation.monthlyTotalRent}})" disabled/>
+    -->
         <!--<p>Cout moyen par mois : </p>
         <input class="form-control" value="{{simulation.monthlyCost}} (+{{simulation.monthlyInsurance}}={{simulation.monthlyTotalCost}})" disabled/>-->
+        <!--
         <p>Ratio cout/emprunté (%) : </p>
         <input class="form-control" value="{{simulation.costRatio}} ({{simulation.totalRatio}})" disabled/>
     </div>
-    <div class="col-md-8">
+        -->
+    <div class="col-md-10">
         <h2> Simulations </h2>
         <table class="table table-striped">
             <th>Emprunt</th>

@@ -101,11 +101,32 @@ mainControllers.controller('MainCtrl', ['$scope','Rates','Simulation',
                     monthlyRent=parseInt((totalValue*monthlyRate)/(1-Math.pow(1+monthlyRate,-months)));
                 else
                     monthlyRent=parseInt(totalValue/months);
-               return monthlyRent; 
+                return monthlyRent; 
             };
             var processMonthlyInsurance=function(insuranceRate,totalValue){
                 return parseInt(totalValue*insuranceRate/100/12);
             };
+            var addSimulation=function(s){
+                $scope.simulations.push(s)
+            }
+            var traceSimulation = function(s){
+                var simulation = new Simulation(s);
+                Simulation.save(simulation);
+            }
+            var isValid = function(simulation){
+                if(isNaN(simulation.totalCost)){
+                    console.log("NAN");
+                    return false;
+                }
+                return true;
+            }
+            $scope.clickSimulate=function(){
+                var s = simulate();
+                if(isValid(s)){
+                    addSimulation(s);
+                    traceSimulation(s);
+                }
+            }
             var simulate=function(){
                 preCheck();
                 var totalValue = $scope.simulation.totalValue;
@@ -128,19 +149,15 @@ mainControllers.controller('MainCtrl', ['$scope','Rates','Simulation',
                 $scope.simulation.totalCost = totalCost; 
                 //monthlyCost
                 /*
-                var monthlyCost = parseInt(loanCost/months);
-                $scope.simulation.monthlyCost= monthlyCost;
-                $scope.simulation.monthlyTotalCost = monthlyCost+monthlyInsurance;
-                */
+                   var monthlyCost = parseInt(loanCost/months);
+                   $scope.simulation.monthlyCost= monthlyCost;
+                   $scope.simulation.monthlyTotalCost = monthlyCost+monthlyInsurance;
+                   */
                 //CostRate
                 $scope.simulation.costRatio=parseInt(loanCost/totalValue*100);
                 $scope.simulation.insuranceRatio =parseInt(insuranceCost/totalValue*100);
                 $scope.simulation.totalRatio =parseInt(totalCost/totalValue*100);
-            };
-            simulate();
-            $scope.simulateAndTrace = function(){
-                simulate();
-                var s = {
+                return {
                     //TODO update
                     at: new Date(),
                     totalValue: $scope.simulation.totalValue,
@@ -155,19 +172,14 @@ mainControllers.controller('MainCtrl', ['$scope','Rates','Simulation',
                     monthlyTotalRent: $scope.simulation.monthlyTotalRent,
                     //monthlytotalCost: $scope.simulation.monthlyTotalCost,
                     costRatio: $scope.simulation.costRatio,
-                    totalRatio: $scope.simulation.totalRatio
+                    totalRatio: $scope.simulation.totalRatio,
+                    //ROR
+                    costRate: $scope.simulation.costRatio,
+                    monthlyCost:$scope.simulation.monthlyRent
+                        //monthlytotalCost:$scope.simulation.monthlyRent,
                 };
-                if(isValid(s)){
-                    $scope.simulations.push(s)
-                    //var simulation = new Simulation(s);
-                    //Simulation.save(simulation);
-                }
-            }
+            };
+            var s = simulate();
+            addSimulation(s);
         }]);
-var isValid = function(simulation){
-    if(isNaN(simulation.totalCost)){
-        console.log("NAN");
-        return false;
-    }
-    return true;
-}
+

@@ -3,6 +3,14 @@ var scraperjs = require('scraperjs');
 var COMMON = require('./common.js');
 var tmp = scraperjs.StaticScraper.create('http://www.meilleurtaux.com/credit-immobilier/barometre-des-taux.html');
 var CronJob = require('cron').CronJob;
+var cronJob = new CronJob({
+    cronTime: '0 0 8 * * *', 
+    onTick: function() {
+        process();
+    }
+});
+cronJob.start();
+
 var process = function(){
     tmp.scrape(function($) {
         return $(".tfix").map(function() {
@@ -23,7 +31,7 @@ var process = function(){
         pushValue(new Date(),20,values[3]);
         console.log(values[6]); 
         pushValue(new Date(),25,values[6]);
-
+        //
         console.log(values[9]); 
         pushValue(new Date(),7,values[9]);
         console.log(values[12]); 
@@ -50,11 +58,4 @@ var pushValue = function(date,years,rate){
     }
     COMMON.ror_post(data,"hephaistos_ror.slapps.fr","/rates.json");
 }
-var cronJob = new CronJob({
-    cronTime: '0 0 8 * * *', 
-    onTick: function() {
-        process();
-    }
-});
-cronJob.start();
 
