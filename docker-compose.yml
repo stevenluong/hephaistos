@@ -16,7 +16,6 @@ services:
         #depends_on: 
         links:
             - ror
-            - redis
         volumes:
             - ./node/:/node
             - /node/node_modules
@@ -33,17 +32,6 @@ services:
         volumes:
             - ./http/:/http
             - /http/node_modules
-        restart: always
-        networks:
-            - nginx_default
-    redis:
-        build: redis/.
-        command: redis-server /usr/local/etc/redis/redis.conf
-        #image: redis
-        #ports:
-        #    - "6379:6379"
-        volumes:
-            - /redis/redis.conf:/usr/local/etc/redis/redis.conf
         restart: always
         networks:
             - nginx_default
