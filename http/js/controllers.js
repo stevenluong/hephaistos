@@ -57,9 +57,13 @@ mainControllers.controller('MainCtrl', ['$scope','Rates','Simulation',
                 console.log(points, evt);
             };
             //Default values
-            $scope.defaultTotalValue = 223100;
-            $scope.defaultInsuranceRate = 0.22;
-            $scope.defaultRate = 2.15;
+            //$scope.defaultTotalValue = 223100;
+            //$scope.defaultInsuranceRate = 0.22;
+            //$scope.defaultRate = 2.15;
+            //$scope.defaultYears = 25;
+            $scope.defaultTotalValue = 279712.21;
+            $scope.defaultInsuranceRate = 0.39;
+            $scope.defaultRate = 1.75;
             $scope.defaultYears = 25;
 
             //$scope.simulation.loanCost = 0;
