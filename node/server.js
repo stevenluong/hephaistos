@@ -13,8 +13,11 @@ cronJob.start();
 
 var process = function(){
     tmp.scrape(function($) {
-        return $(".tfix").map(function() {
-            return normalize($(this).text());
+        return $(".col-ans").map(function() {
+            var t = $(this);
+            //console.log(t.text())
+            console.log(t.text().replace(/\t/g,"").split(/\n/g));
+            return normalize(t.text().replace(/\t/g,"").split(/\n/g)[3]);
         }).get();
     })
     .then(function(values) {
@@ -25,19 +28,13 @@ var process = function(){
            }
            */
         //HARDCODE
-        console.log(values[0]); 
-        pushValue(new Date(),15,values[0]);
-        console.log(values[3]); 
+        pushValue(new Date(),7,values[0]);
+        pushValue(new Date(),10,values[1]);
+        pushValue(new Date(),12,values[2]);
+        pushValue(new Date(),15,values[2]);
         pushValue(new Date(),20,values[3]);
-        console.log(values[6]); 
-        pushValue(new Date(),25,values[6]);
+        pushValue(new Date(),25,values[4]);
         //
-        console.log(values[9]); 
-        pushValue(new Date(),7,values[9]);
-        console.log(values[12]); 
-        pushValue(new Date(),10,values[12]);
-        console.log(values[15]); 
-        pushValue(new Date(),12,values[15]);
     })
 }
 
