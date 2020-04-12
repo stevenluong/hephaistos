@@ -1,5 +1,6 @@
 bower_components/
 node_modules/
+reactjs/build/
 ror/log/
 ror/public/assets/
 ror/vendor/bundle/
