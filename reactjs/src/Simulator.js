@@ -119,12 +119,6 @@ export default function Simulator({assets}) {
         <Paper className={classes.paper}>
           <Inputs simulations={simulations} insuranceChecked={insuranceChecked} renegociateChecked={renegociateChecked} addSimulation={(s)=>setSimulations([...simulations,simulate(s)])} toggleInsurance={(b)=>setInsuranceChecked(b)} toggleRenegociate={(b)=>setRenegociateChecked(b)}/>
         </Paper>
-
-      </Grid>
-      <Grid item xs={12} md={12} lg={9}>
-        <Paper className={classes.paper}>
-          <Simulations simulations={simulations} insuranceChecked={insuranceChecked} renegociateChecked={renegociateChecked}/>
-        </Paper>
         <br/>
         <Paper className={classes.paper}>
           Rates (fixed) as of 13/04/2020:
@@ -174,6 +168,12 @@ export default function Simulator({assets}) {
           </TableBody>
           </Table>
         </Paper>
+      </Grid>
+      <Grid item xs={12} md={12} lg={9}>
+        <Paper className={classes.paper}>
+          <Simulations simulations={simulations} insuranceChecked={insuranceChecked} renegociateChecked={renegociateChecked}/>
+        </Paper>
+
       </Grid>
     </Grid>
     </React.Fragment>

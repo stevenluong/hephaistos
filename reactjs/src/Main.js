@@ -20,6 +20,7 @@ import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import { useOktaAuth } from '@okta/okta-react';
 import { Link as RouterLink, Redirect } from 'react-router-dom';
+import logo from './logo.png';
 
 import Profile from './User/Profile';
 import Dashboard from './Dashboard';
@@ -181,7 +182,13 @@ export default function Main({url}) {
   const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
   //console.log(authState.isAuthenticated);
   if (authState.isPending) {
-    return <div>Loading...</div>;
+    return (
+    <div className="App">
+      <header className="App-header">
+    <img src={logo} className="App-logo" alt="logo" />
+    <p>Loading ...</p>
+    </header>
+  </div>)
   }
   if(!authState.isAuthenticated)
     return(

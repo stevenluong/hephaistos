@@ -31,9 +31,9 @@ export default function Simulations(props) {
           {simulations.map(s => (
             <React.Fragment>
             <TableRow key={s.guid}>
-                <TableCell>{s.amount} {s.renegociate && (<span><br/>Remaining : {s.renegociateAmount.toFixed(2)}</span>)}</TableCell>
-                <TableCell>{s.rate}% {s.renegociate && (<span><br/>Remaining : {s.renegociateRate}</span>)}</TableCell>
-                <TableCell>{s.duration} y {s.renegociate && (<span><br/>Remaining : {s.renegociateDuration}</span>)}</TableCell>
+                <TableCell>{s.amount} {s.renegociate && (<span><br/>Remaining :- {s.renegociateAmount.toFixed(2)}</span>)}</TableCell>
+                <TableCell>{s.rate}% {s.renegociate && (<span><br/>New - {s.renegociateRate}</span>)}</TableCell>
+                <TableCell>{s.duration} y {s.renegociate && (<span><br/>Remaining - {s.renegociateDuration}</span>)}</TableCell>
                 {props.insuranceChecked && (<TableCell>{s.insuranceRate}%</TableCell>)}
                 <TableCell>{s.monthlyPayment.toFixed(0)}
                 {props.insuranceChecked && (<span>(+ {s.insurranceOnlyMonthlyPayment.toFixed(0)} = {(s.monthlyPayment+s.insurranceOnlyMonthlyPayment).toFixed(0)}) </span>)}
