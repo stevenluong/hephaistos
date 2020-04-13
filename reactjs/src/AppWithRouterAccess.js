@@ -5,7 +5,7 @@ import SignInSide from './User/SignInSide';
 import SignUp from './User/SignUp';
 import Main from './Main';
 import Profile from './User/Profile';
-import config from './app.config';
+import config from './User/app.config';
 import Notfound from './NotFound'
 
 const AppWithRouterAccess = () => {
