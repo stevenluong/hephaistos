@@ -21,8 +21,9 @@ import NotificationsIcon from '@material-ui/icons/Notifications';
 import { useOktaAuth } from '@okta/okta-react';
 import { Link as RouterLink, Redirect } from 'react-router-dom';
 
-import Profile from './Profile';
+import Profile from './User/Profile';
 import Dashboard from './Dashboard';
+import Simulator from './Simulator';
 
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
@@ -32,51 +33,50 @@ import PersonIcon from '@material-ui/icons/Person';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import TripOriginIcon from '@material-ui/icons/TripOrigin';
 import LayersIcon from '@material-ui/icons/Layers';
-import BookmarkIcon from '@material-ui/icons/Bookmark';
+import TimelineIcon from '@material-ui/icons/Timeline';
 
 
-function processNews(news){
-  var processedNews = news;
-  var seen = {}
-  processedNews = news.filter((item)=> {return seen.hasOwnProperty(item.title)?false:(seen[item.title]=true)})
-  return processedNews;
+function getAssetsWithMortgage(cb){
+  var assets = [];
+  //Asset 1
+  var a = {
+    name : "P13",
+    value: 310100,
+    type: "Flat",
+    income: 1200
+  }
+  var m = {
+    amount : 279712.21,
+    duration : 25,
+    rate : 1.75,
+    startDate : new Date("03/01/2018")
+  }
+  m.monthlyPayment = 1200; //TODO
+  a.roi = (a.income*12/a.value*100).toFixed(2);
+  a.mortgage = m;
+  a.cashflow = a.income - m.monthlyPayment;
+  assets.push(a);
+  //Asset 2
+  var a = {
+    name : "P19",
+    value: 175000,
+    type: "Flat",
+    income: 900
+  }
+  var m = {
+    amount : 170778.74,
+    duration : 24,
+    rate : 1.55,
+    startDate : new Date("29/09/2018")
+  }
+  m.monthlyPayment = 750; //TODO
+  a.roi = (a.income*12/a.value*100).toFixed(2);
+  a.mortgage = m;
+  a.cashflow = a.income - m.monthlyPayment;
+  assets.push(a);
+  cb(assets);
 }
 
-function getNews(cb){
-  //var news = rows;
-  //news.push({})
-  //var start = new Date(currentDate);
-  var start = new Date();
-  start.setDate(start.getDate()-1);
-  //start.setDate(currentDate.getDate()-1);
-  start.setHours(0,0,0,0);
-  //TODO GOOD
-  var s = start.toISOString();
-  console.log("s:"+s);
-  var end = new Date();
-  end.setHours(23,59,59,999);
-  //TODO GOOD
-  var e = end.toISOString();
-  console.log("e:"+e);
-  var q = "https://apollo-loopback.slapps.fr/api/News?filter[where][and][0][datetime][gt]="+s+"&filter[where][and][1][datetime][lt]="+e
-  console.log(q)
-  fetch(q)
-      .then(result=>result.json())
-      .then(titles=>{
-          console.log(titles);
-          //this.setState({titles:titles});
-          var news = []
-          titles.forEach(t =>{
-            //console.log(t.source);
-            if(["Challenges","JDG", "The Verge", "Korben", "LifeHacker"].indexOf(t.source)!==-1) //TODO - configure
-              news.push(t)
-          })
-          news = processNews(news);
-          //news = titles;
-          cb(news);
-      });
-  //return news;
-}
 
 function Copyright() {
   return (
@@ -171,7 +171,7 @@ export default function Main({url}) {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
   const [fetch, setFetch] = React.useState(false)
-  const [news, setNews] = React.useState([])
+  const [assets, setAssets] = React.useState([])
   const handleDrawerOpen = () => {
     setOpen(true);
   };
@@ -179,7 +179,7 @@ export default function Main({url}) {
     setOpen(false);
   };
   const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
-  console.log(authState.isAuthenticated);
+  //console.log(authState.isAuthenticated);
   if (authState.isPending) {
     return <div>Loading...</div>;
   }
@@ -188,15 +188,17 @@ export default function Main({url}) {
       <Redirect to={{ pathname: '/login' }}/>
     )
   if(!fetch){
-    getNews(setNews);
+    getAssetsWithMortgage(setAssets);
     setFetch(true);
   }
-  console.log(url)
+  //console.log(url)
   var content = null;
   if(url==="profile")
     content = <Profile/>
   if(url==="dashboard")
-    content = <Dashboard news={news}/>
+    content = <Dashboard assets={assets}/>
+  if(url==="simulator")
+    content = <Simulator assets={assets}/>
 
   //console.log(fetch);
   return (
@@ -214,7 +216,7 @@ export default function Main({url}) {
             <MenuIcon />
           </IconButton>
           <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
-            Apollo - News aggregator
+            Hephaistos - Assets Management
           </Typography>
           <IconButton color="inherit">
             <Badge badgeContent={4} color="secondary">
@@ -237,42 +239,27 @@ export default function Main({url}) {
         </div>
         <Divider />
         <List>
-        <div>
-          <RouterLink to='/'>
-            <ListItem button>
-              <ListItemIcon>
-                <LayersIcon />
-              </ListItemIcon>
-              <ListItemText primary="Dashboard" />
-            </ListItem>
-          </RouterLink>
-          <ListItem button>
+          <ListItem button component={RouterLink} to="/">
             <ListItemIcon>
-              <BookmarkIcon />
+              <LayersIcon />
             </ListItemIcon>
-            <ListItemText primary="Topics" />
+            <ListItemText primary="Dashboard" />
           </ListItem>
-        </div>
+          <ListItem button component={RouterLink} to="/simulator">
+            <ListItemIcon>
+              <TimelineIcon />
+            </ListItemIcon>
+            <ListItemText primary="Simulator" />
+          </ListItem>
         </List>
         <Divider />
         <List>
-        <div>
-          <ListSubheader inset>Settings</ListSubheader>
-          <ListItem button>
-            <ListItemIcon>
-              <TripOriginIcon />
-            </ListItemIcon>
-            <ListItemText primary="Sources" />
-          </ListItem>
-          <RouterLink to='/profile'>
-          <ListItem button>
+          <ListItem button component={RouterLink} to="/profile">
             <ListItemIcon>
               <PersonIcon />
             </ListItemIcon>
             <ListItemText primary="Profile" />
           </ListItem>
-          </RouterLink>
-        </div>
         </List>
         <Divider />
         <List>

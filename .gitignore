@@ -2,6 +2,7 @@ bower_components/
 node_modules/
 reactjs/build/
 ror/log/
+.DS_Store
 ror/public/assets/
 ror/vendor/bundle/
 ror/vendor/cache/

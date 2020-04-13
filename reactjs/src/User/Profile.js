@@ -3,7 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Link from '@material-ui/core/Link';
 
-import Title from './Title';
+import Title from '../Title';
 
 const useStyles = makeStyles(theme => ({
   paper: {
