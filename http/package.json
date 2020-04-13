@@ -20,7 +20,7 @@
         "angular-chart.js": "*",
         "chart.js": "*",
         "jquery": "~2.1.1",
-        "bootstrap": "~3.1.1",
+        "bootstrap": "~3.4.1",
         "querystring": "*"
     }
 }
