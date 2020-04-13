@@ -1,5 +1,20 @@
 version: '2'
 services:
+    reactjs:
+        build: reactjs/.
+        command: serve -s ./build/. -p 80
+        #depends_on: 
+        #    - loopback
+        #ports:
+        #    - "8001:80"
+        volumes:
+            - ./reactjs/:/reactjs
+            - /reactjs/node_modules
+        restart: always
+        mem_limit: 64m
+        networks:
+            - nginx_default
+ 
     ror:
         build: ror/.
         command: bash -c "rm -f tmp/pids/server.pid && bundle exec rails s -p 80 -b '0.0.0.0'"
