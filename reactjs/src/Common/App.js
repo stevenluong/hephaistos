@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
+import React from 'react';
 import './App.css';
 import { BrowserRouter as Router } from 'react-router-dom';
-import AppWithRouterAccess from './AppWithRouterAccess';
+import AppWithRouterAccess from '../AppWithRouterAccess';
 
 
 const App = () => {

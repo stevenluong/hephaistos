@@ -11,13 +11,9 @@ import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
-import Title from './Title';
 
 import Inputs from './Inputs';
 import Simulations from './Simulations';
-
-
-const drawerWidth = 240;
 
 const useStyles = makeStyles(theme => ({
 
@@ -49,7 +45,7 @@ function parseDate(s){
   return new Date(d[2],d[1]-1,d[0]);
 }
 function calcMonthlyPayment(P,r,N){
-  if(r == 0)
+  if(r === 0)
     return P/N;
   else {
     return r*P/(1-Math.pow(1+r,-N));
@@ -91,7 +87,6 @@ function simulate(s){
 }
 export default function Simulator({assets}) {
   const classes = useStyles();
-  const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
   const [insuranceChecked, setInsuranceChecked] = React.useState(true)
   const [renegociateChecked, setRenegociateChecked] = React.useState(false)
   //TODO - Connect to Assets

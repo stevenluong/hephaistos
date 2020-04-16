@@ -12,15 +12,13 @@ import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
 import Badge from '@material-ui/core/Badge';
 import Container from '@material-ui/core/Container';
-import Grid from '@material-ui/core/Grid';
-import Paper from '@material-ui/core/Paper';
 import Link from '@material-ui/core/Link';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import { useOktaAuth } from '@okta/okta-react';
 import { Link as RouterLink, Redirect } from 'react-router-dom';
-import logo from './logo.png';
+import logo from './Common/logo.png';
 
 import Profile from './User/Profile';
 import Dashboard from './Dashboard';
@@ -29,14 +27,53 @@ import Simulator from './Simulator';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import ListSubheader from '@material-ui/core/ListSubheader';
 import PersonIcon from '@material-ui/icons/Person';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
-import TripOriginIcon from '@material-ui/icons/TripOrigin';
 import LayersIcon from '@material-ui/icons/Layers';
 import TimelineIcon from '@material-ui/icons/Timeline';
 
 
+function getAssets(cb){
+  var q = "http://localhost:8529/_db/_system/hephaistos/assets"
+  console.log(q)
+  fetch(q)
+      .then(result=>result.json())
+      .then(assets=>{
+          console.log(assets);
+          //this.setState({titles:titles});
+          //var news = []
+          //assets.forEach(a =>{
+            //console.log(t.source);
+            //if(["Challenges","JDG", "The Verge", "Korben", "LifeHacker"].indexOf(t.source)!==-1) //TODO - configure
+            //  news.push(t)
+          //})
+          //news = processNews(news);
+          //news = titles;
+          cb(assets);
+      });
+  //return news;
+}
+function getLiabilities(cb){
+  var q = "http://localhost:8529/_db/_system/hephaistos/liabilities"
+  console.log(q)
+  fetch(q)
+      .then(result=>result.json())
+      .then(liabilities=>{
+          console.log(liabilities);
+          //this.setState({titles:titles});
+          //var news = []
+          //assets.forEach(a =>{
+            //console.log(t.source);
+            //if(["Challenges","JDG", "The Verge", "Korben", "LifeHacker"].indexOf(t.source)!==-1) //TODO - configure
+            //  news.push(t)
+          //})
+          //news = processNews(news);
+          //news = titles;
+          cb(liabilities);
+      });
+  //return news;
+}
+/*
 function getAssetsWithMortgage(cb){
   var assets = [];
   //Asset 1
@@ -77,7 +114,7 @@ function getAssetsWithMortgage(cb){
   assets.push(a);
   cb(assets);
 }
-
+*/
 
 function Copyright() {
   return (
@@ -170,16 +207,17 @@ const useStyles = makeStyles(theme => ({
 export default function Main({url}) {
   const { authState, authService } = useOktaAuth();
   const classes = useStyles();
-  const [open, setOpen] = React.useState(false);
-  const [fetch, setFetch] = React.useState(false)
+  const [open, setOpen] = React.useState(true);
+  const [fetch, setFetch] = React.useState(false);
+  const [user, setUser] = React.useState(null);
   const [assets, setAssets] = React.useState([])
+  const [liabilities, setLiabilities] = React.useState([])
   const handleDrawerOpen = () => {
     setOpen(true);
   };
   const handleDrawerClose = () => {
     setOpen(false);
   };
-  const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
   //console.log(authState.isAuthenticated);
   if (authState.isPending) {
     return (
@@ -194,18 +232,26 @@ export default function Main({url}) {
     return(
       <Redirect to={{ pathname: '/login' }}/>
     )
+  if(!user){
+    authService.getUser().then((info) => {
+      //setUserInfo(info);
+      console.log(info);
+      setUser(info)
+    });
+  }
   if(!fetch){
-    getAssetsWithMortgage(setAssets);
+    getAssets(setAssets);
+    getLiabilities(setLiabilities);
     setFetch(true);
   }
   //console.log(url)
   var content = null;
   if(url==="profile")
-    content = <Profile/>
+    content = <Profile user={user}/>
   if(url==="dashboard")
-    content = <Dashboard assets={assets}/>
+    content = <Dashboard assets={assets} liabilities={liabilities}/>
   if(url==="simulator")
-    content = <Simulator assets={assets}/>
+    content = <Simulator assets={assets} liabilities={liabilities}/>
 
   //console.log(fetch);
   return (

@@ -6,9 +6,9 @@ import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 
 import Assets from './Assets';
-
-
-const drawerWidth = 240;
+import Liabilities from './Liabilities';
+import Cashflow from './Cashflow';
+import Tips from './Tips';
 
 const useStyles = makeStyles(theme => ({
 
@@ -26,16 +26,32 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default function Dashboard({assets}) {
+export default function Dashboard({assets,liabilities}) {
   const classes = useStyles();
-  const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
 
   return (
     <React.Fragment>
-    <Grid item xs={12} md={12} lg={12}>
-      <Paper className={classes.paper}>
-        <Assets assets={assets}/>
-      </Paper>
+    <Grid container direction="row" spacing={3}>
+      <Grid item xs={12} md={12} lg={6}>
+        <Paper className={classes.paper}>
+          <Assets assets={assets}/>
+        </Paper>
+      </Grid>
+      <Grid item xs={12} md={12} lg={6}>
+        <Paper className={classes.paper}>
+          <Liabilities liabilities={liabilities}/>
+        </Paper>
+      </Grid>
+      <Grid item xs={12} md={12} lg={6}>
+        <Paper className={classes.paper}>
+          <Cashflow assets={assets} liabilities={liabilities}/>
+        </Paper>
+      </Grid>
+      <Grid item xs={12} md={12} lg={6}>
+        <Paper className={classes.paper}>
+          <Tips/>
+        </Paper>
+      </Grid>
     </Grid>
     </React.Fragment>
   );

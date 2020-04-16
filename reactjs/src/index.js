@@ -1,8 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import * as serviceWorker from './serviceWorker';
+import './Common/index.css';
+import App from './Common/App';
+import * as serviceWorker from './Common/serviceWorker';
 //import { BrowserRouter as Router } from 'react-router-dom';
 
 ReactDOM.render(

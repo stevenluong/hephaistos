@@ -1,9 +1,9 @@
 import React from 'react';
+
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
-import Link from '@material-ui/core/Link';
 
-import Title from '../Title';
+import Title from '../Common/Title';
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -14,7 +14,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default function Profile() {
+export default function Profile({user}) {
   const classes = useStyles();
   //console.log(fetch);
   return (
@@ -22,7 +22,7 @@ export default function Profile() {
           <Paper className={classes.paper}>
             <Title>Profile</Title>
             <p>
-            Email :
+            Email : {user.email}
             </p>
           </Paper>
 

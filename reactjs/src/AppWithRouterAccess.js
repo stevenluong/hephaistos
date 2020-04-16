@@ -1,12 +1,13 @@
-import React, { Component } from 'react';
+import React, { useState }  from 'react';
 import { Route, useHistory, Switch } from 'react-router-dom';
-import { Security, SecureRoute, LoginCallback } from '@okta/okta-react';
+import { useOktaAuth, Security, SecureRoute, LoginCallback } from '@okta/okta-react';
 import SignInSide from './User/SignInSide';
 import SignUp from './User/SignUp';
 import Main from './Main';
 import Profile from './User/Profile';
 import config from './User/app.config';
-import Notfound from './NotFound'
+import Notfound from './Common/NotFound';
+
 
 const AppWithRouterAccess = () => {
   const history = useHistory();
@@ -21,12 +22,12 @@ const AppWithRouterAccess = () => {
               onAuthRequired={onAuthRequired}
               pkce={true} >
       <Switch>
-        <SecureRoute path='/' exact={true} render={() => <Main url="dashboard" />} />
         <Route path='/login' render={() => <SignInSide baseUrl={config.url} />} />
         <Route path='/signup' render={() => <SignUp baseUrl={config.url} />} />
         <Route path='/implicit/callback' component={LoginCallback} />
         <SecureRoute path='/profile' render={() => <Main url="profile" />} />
         <SecureRoute path='/simulator' render={() => <Main url="simulator" />} />
+        <SecureRoute path='/' exact={true} render={() => <Main url="dashboard" />} />
         <Route component={Notfound} />
       </Switch>
     </Security>
