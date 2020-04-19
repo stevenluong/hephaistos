@@ -6,10 +6,28 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Title from './Common/Title';
 
-export default function Liabilities(props) {
+import Liability from './Liability';
+
+import EditIcon from '@material-ui/icons/Edit';
+import IconButton from '@material-ui/core/IconButton';
+
+export default function Liabilities({liabilities, addLiability, editLiability, removeLiability}) {
   //var cleanedNews = props.news;
-  var sortedLiabilities = props.liabilities.sort((a,b)=>(new Date(b.datetime))-(new Date(a.datetime)))
-  console.log(sortedLiabilities)
+  var sortedLiabilities = liabilities;//.sort((a,b)=>(new Date(b.datetime))-(new Date(a.datetime)))
+  //console.log(sortedLiabilities)
+
+  const [liability, setLiability] = React.useState({name:"",value:"", type:"", income:""})
+  const [action, setAction] = React.useState("new")
+  const [open, setOpen] = React.useState(false);
+  //const [asset, setAsset] = React.useState({})
+
+  const handleEdit = (asset) => {
+    console.log(asset);
+    setAction("edit");
+    setLiability(asset);
+    setOpen(true);
+  };
+
   return (
     <React.Fragment>
       <Title id="liabilities">Liabilities</Title>
@@ -17,10 +35,11 @@ export default function Liabilities(props) {
         <TableHead>
           <TableRow>
             <TableCell>Name</TableCell>
-            <TableCell>Value</TableCell>
-            <TableCell>Type</TableCell>
+            <TableCell>Amount</TableCell>
+            <TableCell>Duration</TableCell>
             <TableCell>Rate</TableCell>
-            <TableCell>Payment per month</TableCell>
+            <TableCell>Payment/m</TableCell>
+            <TableCell padding="checkbox"> </TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -31,12 +50,16 @@ export default function Liabilities(props) {
                 <TableCell>{l.duration} years</TableCell>
                 <TableCell>{l.rate}%</TableCell>
                 <TableCell>{l.monthlyPayment}</TableCell>
-                <TableCell>{l.start}</TableCell>
+                <TableCell padding="checkbox">
+                  <IconButton aria-label="edit" onClick={() => handleEdit(l)}>
+                    <EditIcon />
+                  </IconButton>
+                </TableCell>
             </TableRow>
           ))}
-
         </TableBody>
       </Table>
+      <Liability liability={liability} addLiability={addLiability} editLiability={editLiability} removeLiability={removeLiability} setAction={setAction} action={action} setOpen={setOpen} open={open} setLiability={setLiability}/>
     </React.Fragment>
   );
 }

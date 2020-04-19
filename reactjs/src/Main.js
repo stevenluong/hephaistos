@@ -32,46 +32,61 @@ import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import LayersIcon from '@material-ui/icons/Layers';
 import TimelineIcon from '@material-ui/icons/Timeline';
 
-
-function getAssets(cb){
-  var q = "http://localhost:8529/_db/_system/hephaistos/assets"
+var config = {
+  //server : "http://localhost:8529", // local
+  server : "https://athena.slapps.fr",
+  //dbUrl : "/_db/_system/hephaistos" // local
+  dbUrl : "/_db/production/hephaistos"
+}
+function getAssets(user,cb){
+  var q = config.server+config.dbUrl+"/assets/"+user._key
   console.log(q)
   fetch(q)
       .then(result=>result.json())
       .then(assets=>{
-          console.log(assets);
-          //this.setState({titles:titles});
-          //var news = []
-          //assets.forEach(a =>{
-            //console.log(t.source);
-            //if(["Challenges","JDG", "The Verge", "Korben", "LifeHacker"].indexOf(t.source)!==-1) //TODO - configure
-            //  news.push(t)
-          //})
-          //news = processNews(news);
-          //news = titles;
+          //console.log(assets);
           cb(assets);
       });
-  //return news;
 }
-function getLiabilities(cb){
-  var q = "http://localhost:8529/_db/_system/hephaistos/liabilities"
+function getLiabilities(user,cb){
+  var q = config.server+config.dbUrl+"/liabilities/"+user._key
   console.log(q)
   fetch(q)
       .then(result=>result.json())
       .then(liabilities=>{
-          console.log(liabilities);
-          //this.setState({titles:titles});
-          //var news = []
-          //assets.forEach(a =>{
-            //console.log(t.source);
-            //if(["Challenges","JDG", "The Verge", "Korben", "LifeHacker"].indexOf(t.source)!==-1) //TODO - configure
-            //  news.push(t)
-          //})
-          //news = processNews(news);
-          //news = titles;
+          //console.log(liabilities);
           cb(liabilities);
       });
-  //return news;
+}
+
+function createUser(user,cb){
+  var q = config.server+config.dbUrl+"/users/"
+  console.log(q)
+  fetch(q,{
+    method:'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(user),
+  })
+      .then(result=>result.json())
+      .then(u=>{
+          //console.log(u);
+          cb(Object.assign(user,u));
+      });
+}
+
+function getUser(user,cb){
+  var q = config.server+config.dbUrl+"/users/"+user.sub
+  console.log(q)
+  fetch(q)
+      .then(result=>result.json())
+      .then(u=>{
+          if(u.length==0)
+            createUser(user, cb);
+          //console.log(u);
+          cb(Object.assign(user,u[0]));
+      });
 }
 /*
 function getAssetsWithMortgage(cb){
@@ -208,8 +223,9 @@ export default function Main({url}) {
   const { authState, authService } = useOktaAuth();
   const classes = useStyles();
   const [open, setOpen] = React.useState(true);
-  const [fetch, setFetch] = React.useState(false);
-  const [user, setUser] = React.useState(null);
+  //const [retrieved, setRetrieved] = React.useState(false);
+  const [userRequested, setUserRequested] = React.useState(false);
+  const [user, setUser] = React.useState({_key:0});
   const [assets, setAssets] = React.useState([])
   const [liabilities, setLiabilities] = React.useState([])
   const handleDrawerOpen = () => {
@@ -218,6 +234,7 @@ export default function Main({url}) {
   const handleDrawerClose = () => {
     setOpen(false);
   };
+
   //console.log(authState.isAuthenticated);
   if (authState.isPending) {
     return (
@@ -232,26 +249,182 @@ export default function Main({url}) {
     return(
       <Redirect to={{ pathname: '/login' }}/>
     )
-  if(!user){
+  //console.log(user);
+  if(!userRequested){
+    setUserRequested(true);
     authService.getUser().then((info) => {
       //setUserInfo(info);
-      console.log(info);
-      setUser(info)
+      //console.log(info);
+      getUser(info, (u)=>{
+        console.log(u)
+        setUser(u)
+        getAssets(u,setAssets);
+        getLiabilities(u,setLiabilities);
+      });
+      //setUser(info)
     });
   }
-  if(!fetch){
-    getAssets(setAssets);
-    getLiabilities(setLiabilities);
-    setFetch(true);
-  }
   //console.log(url)
+
+  const addAsset = (asset) => {
+    asset.user = user._key;
+    var q = config.server+config.dbUrl+"/assets"
+    fetch(q,{
+      method:'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(asset),
+    })
+        .then(result=>result.json())
+        .then(a=>{
+            console.log(a);
+            console.log(assets)
+            setAssets([...assets,a]);
+        });
+  };
+  const editAsset = (asset) => {
+    console.log(asset);
+    asset._rev=null;
+    var q = config.server+config.dbUrl+"/assets/"+asset._key
+    fetch(q,{
+      method:'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(asset),
+    })
+        .then(result=>result.json())
+        .then(updatedAsset=>{
+            //console.log(updatedAsset);
+            //console.log(assets)
+            var updatedAssets = []
+            assets.forEach((a,i)=>{
+              if(a._key === asset._key)
+                updatedAssets.push(asset);
+              else {
+                updatedAssets.push(a);
+              }
+            })
+            //assets.push(asset);
+            setAssets(updatedAssets);
+        });
+  };
+  const removeAsset = (asset) => {
+    var q = config.server+config.dbUrl+"/assets/"+asset._key
+    fetch(q,{
+      method:'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    })
+        .then(result=>result.json())
+        .then(removedAsset=>{
+            //console.log(a);
+            //console.log(assets)
+            var updatedAssets = []
+            assets.forEach((a,i)=>{
+              //console.log(i);
+              if(a._key != asset._key)
+                updatedAssets.push(a);
+            })
+            //console.log(updatedAssets)
+            setAssets(updatedAssets);
+        });
+  };
+  const addLiability = (liability) => {
+    liability.user = user._key;
+    var q = config.server+config.dbUrl+"/liabilities"
+    fetch(q,{
+      method:'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(liability),
+    })
+        .then(result=>result.json())
+        .then(l=>{
+            //console.log(a);
+            //console.log(assets)
+            setLiabilities([...liabilities,l]);
+        });
+  };
+  const editLiability = (liability) => {
+    //console.log(liability);
+    liability._rev=null;
+    var q = config.server+config.dbUrl+"/liabilities/"+liability._key
+    fetch(q,{
+      method:'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(liability),
+    })
+        .then(result=>result.json())
+        .then(updatedLiability=>{
+            var updatedLiabilities = []
+            liabilities.forEach((l,i)=>{
+              if(l._key === liability._key)
+                updatedLiabilities.push(liability);
+              else {
+                updatedLiabilities.push(l);
+              }
+            })
+            //assets.push(asset);
+            setLiabilities(updatedLiabilities);
+        });
+  };
+  const removeLiability = (liability) => {
+    var q = config.server+config.dbUrl+"/liabilities/"+liability._key
+    fetch(q,{
+      method:'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    })
+        .then(result=>result.json())
+        .then(removedLiability=>{
+            //console.log(a);
+            //console.log(assets)
+            var updatedLiabilities = []
+            liabilities.forEach((l,i)=>{
+              //console.log(i);
+              if(l._key != liability._key)
+                updatedLiabilities.push(l);
+            })
+            //console.log(updatedAssets)
+            setLiabilities(updatedLiabilities);
+        });
+  };
+
+  const editUser = (user) => {
+    console.log(user);
+    user._rev=null;
+    var q = config.server+config.dbUrl+"/users/"+user._key
+    fetch(q,{
+      method:'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(user),
+    })
+        .then(result=>result.json())
+        .then(updatedUser=>{
+            //console.log(updatedAsset);
+            //assets.push(asset);
+            setUser(user);
+        });
+  };
+
   var content = null;
   if(url==="profile")
-    content = <Profile user={user}/>
+    content = <Profile user={user} editUser={editUser} setUser={setUser}/>
   if(url==="dashboard")
-    content = <Dashboard assets={assets} liabilities={liabilities}/>
+    content = <Dashboard user={user} assets={assets} liabilities={liabilities} addAsset={addAsset} editAsset={editAsset} removeAsset={removeAsset} addLiability={addLiability} editLiability={editLiability} removeLiability={removeLiability}/>
   if(url==="simulator")
-    content = <Simulator assets={assets} liabilities={liabilities}/>
+    content = <Simulator user={user} assets={assets} liabilities={liabilities}/>
+
+
 
   //console.log(fetch);
   return (

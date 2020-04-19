@@ -28,7 +28,7 @@ export default function Simulations(props) {
         <TableBody>
           {simulations.map(s => (
             <React.Fragment>
-            <TableRow key={s.guid}>
+            <TableRow key={s.key}>
                 <TableCell>{s.amount} {s.renegociate && (<span><br/>Remaining <br/> {s.renegociateAmount.toFixed(2)}</span>)}</TableCell>
                 <TableCell>{s.rate}% {s.renegociate && (<span><br/>New <br/> {s.renegociateRate}%</span>)}</TableCell>
                 <TableCell>{s.duration} y {s.renegociate && (<span><br/>Remaining <br/> {s.renegociateDuration.toFixed(2)} y</span>)}</TableCell>

@@ -52,6 +52,7 @@ function calcMonthlyPayment(P,r,N){
   }
 }
 function simulate(s){
+  s.key = new Date();
   //console.log(s)
   //https://en.wikipedia.org/wiki/Mortgage_calculator
   var P = s.amount;

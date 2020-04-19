@@ -26,7 +26,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default function Dashboard({assets,liabilities}) {
+export default function Dashboard({user, assets,liabilities,addAsset, editAsset, removeAsset, addLiability, editLiability, removeLiability}) {
   const classes = useStyles();
 
   return (
@@ -34,17 +34,17 @@ export default function Dashboard({assets,liabilities}) {
     <Grid container direction="row" spacing={3}>
       <Grid item xs={12} md={12} lg={6}>
         <Paper className={classes.paper}>
-          <Assets assets={assets}/>
+          <Assets assets={assets} addAsset={addAsset} editAsset={editAsset} removeAsset={removeAsset}/>
         </Paper>
       </Grid>
       <Grid item xs={12} md={12} lg={6}>
         <Paper className={classes.paper}>
-          <Liabilities liabilities={liabilities}/>
+          <Liabilities liabilities={liabilities} addLiability={addLiability} editLiability={editLiability} removeLiability={removeLiability}/>
         </Paper>
       </Grid>
       <Grid item xs={12} md={12} lg={6}>
         <Paper className={classes.paper}>
-          <Cashflow assets={assets} liabilities={liabilities}/>
+          <Cashflow user={user} assets={assets} liabilities={liabilities}/>
         </Paper>
       </Grid>
       <Grid item xs={12} md={12} lg={6}>
