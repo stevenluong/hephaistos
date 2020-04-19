@@ -38,7 +38,7 @@ export default function Liabilities({liabilities, addLiability, editLiability, r
             <TableCell>Amount</TableCell>
             <TableCell>Duration</TableCell>
             <TableCell>Rate</TableCell>
-            <TableCell>Payment/m</TableCell>
+            <TableCell>Pay/m</TableCell>
             <TableCell padding="checkbox"> </TableCell>
           </TableRow>
         </TableHead>
@@ -47,7 +47,7 @@ export default function Liabilities({liabilities, addLiability, editLiability, r
             <TableRow key={l._key}>
                 <TableCell>{l.name}</TableCell>
                 <TableCell>{l.amount}</TableCell>
-                <TableCell>{l.duration} years</TableCell>
+                <TableCell>{l.duration}y</TableCell>
                 <TableCell>{l.rate}%</TableCell>
                 <TableCell>{l.monthlyPayment}</TableCell>
                 <TableCell padding="checkbox">
