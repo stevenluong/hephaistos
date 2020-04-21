@@ -106,7 +106,7 @@ export default function Simulator({assets}) {
     duration: 288/12,
     insuranceRate: 0.49
   }
-  const [simulations, setSimulations] = React.useState([simulate(s),simulate(s2)])
+  const [simulations, setSimulations] = React.useState([])
   //console.log(simulations);
   return (
     <React.Fragment>
