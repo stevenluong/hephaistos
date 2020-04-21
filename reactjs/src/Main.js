@@ -84,8 +84,11 @@ function getUser(user,cb){
       .then(u=>{
           if(u.length==0)
             createUser(user, cb);
+            else{
+              cb(Object.assign(user,u[0]));
+            }
           //console.log(u);
-          cb(Object.assign(user,u[0]));
+
       });
 }
 /*

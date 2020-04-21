@@ -62,7 +62,7 @@ const SignUp = ({baseUrl}) => {
   const signup = (e) =>{
     e.preventDefault();
     const oktaAuth = new OktaAuth({ url: baseUrl });
-      fetch('https://apollo-node.slapps.fr/api/users', {
+      fetch('https://hephaistos-node.slapps.fr/api/users', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
